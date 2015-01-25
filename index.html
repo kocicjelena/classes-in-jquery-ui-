@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chapter 6 :: Recipe 1</title>
+ <script src="jquery.min.js"></script>
+	<script src ="jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="jquery-ui.css" />
+
+<style type=text/css>
+td {
+    border:1px dashed;
+    padding: 5px;
+}
+li:hover {
+    background:gray;
+}
+.selector .ui-selecting {
+    background: #e7ecfe;
+}
+.selector .ui-selected {
+    background: #d0dafd;
+    color:#000000;
+}
+.color .ui-selected {
+    background: #d0dafd;
+    color:#000000;
+}
+</style>
+<script>
+//$(".selector").selectable ({
+//filter : "p:first-child"
+//});
+</script>
+</head>
+<body>
+    <div class="header">
+        <h1>ALTER ELEMENT CSS WITH JQUERY</h1>
+    </div>
+    <div class="content-frame">
+
+
+<script>
+function toggleSelected() {
+    $("#table-content tr").hide();
+    var colorSelected = $(".selector .ui-selected").length;
+    var sizeSelected = $(".selector2 .ui-selected").length;
+    if ((colorSelected > 0 && sizeSelected == 0) || (colorSelected == 0 && sizeSelected > 0)) {
+        $(".selector").find(".ui-selected").each(function () {
+		 var colour = $(this).text();
+            $(".color:contains(" + $(this).text() + ")").css("color", colour).showParent();
+        });
+
+        $(".selector2").find(".ui-selected").each(function () {
+		var size = $(this).text();
+            $(".size:contains(" + $(this).text() + ")").css("font-size", size).showParent();
+        });
+    } else {
+        $(".selector").find(".ui-selected").each(function () {
+            var selectedColor = $(".color:contains(" + $(this).text() + ")");
+
+            $(".selector2").find(".ui-selected").each(function () {
+			var size = $(this).text();
+                selectedColor.parent().find(".size:contains(" + $(this).text() + ")").css("font-size", size).showParent();
+            });
+
+        });
+    }
+
+    if ($(".ui-selected").length == 0) $("#table-content").find("tr").show();
+}
+$(document).ready(function () {
+    $.fn.showParent = function () {
+        $(this).parent().show();
+    };
+
+    $(".selector, .selector2").bind("mousedown", function (e) {
+        e.metaKey = true;
+    }).selectable({
+        selected: toggleSelected,
+        unselected: toggleSelected
+    });
+	  
+
+});
+       </script> 
+	 
+	   
+	  <div id="sidebar">
+    <div>
+        <p>What color would you like?</p>
+        <ul class="selector">
+            <li id="Red">Red</li>
+            <li id="Blue">Blue</li>
+            <li id="Yellow">Yellow</li>
+        </ul>
+    </div>
+    <div>
+        <p>What size would you like?</p>
+        <ul class="selector2">
+            <li id="Small">small</li>
+            <li id="Med">medium</li>
+            <li id="Large">large</li>
+        </ul>
+    </div>
+	<hr />
+<span id=result></span>
+</div>
+<div>
+    <br>
+    <table id="table-content">
+        <tr>
+            <td>Thing 1</td>
+            <td class="color">Blue</td>
+            <td class="size">small</td>
+        </tr>
+        <tr>
+            <td>Thing 2</td>
+            <td class="color">Red</td>
+            <td class="size">medium</td>
+        </tr>
+        <tr>
+            <td>Thing 3</td>
+            <td class="color">Yellow</td>
+            <td class="size">small</td>
+        </tr>
+        <tr>
+            <td>Thing 4</td>
+            <td class="color">Yellow</td>
+            <td class="size">large</td>
+        </tr>
+        <tr>
+            <td>Thing 5</td>
+            <td class="color">Blue</td>
+            <td class="size">small</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
